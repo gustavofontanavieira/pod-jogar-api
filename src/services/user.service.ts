@@ -26,4 +26,54 @@ export class UserService {
       return error.message;
     }
   }
+
+  async update(userDto: UserDto, userId: string) {
+    try {
+      const editedUser = await this.prisma.user.update({
+        data: userDto,
+        where: {
+          id: userId,
+        },
+      });
+      return editedUser;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async getById(userId: string) {
+    try {
+      const userFound = await this.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      return userFound;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async getAllUsers() {
+    try {
+      const users = await this.prisma.user.findMany();
+      return users;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async deleteUser(userId: string) {
+    try {
+      await this.prisma.user.delete({
+        where: {
+          id: userId,
+        },
+      });
+      return 'Usuário deletado com sucesso';
+    } catch (error) {
+      return error.message;
+    }
+  }
 }
