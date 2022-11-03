@@ -13,6 +13,7 @@ model User {
   lastName String
   email String @unique
   password String
+  image String?
   podcasts Podcasts[]
 
   @@map("User")
@@ -22,8 +23,22 @@ model Podcasts {
   id String @id @default(uuid())
   name String
   description String
+  image String
 
   userAuthorId String
   userAuthor User @relation(fields: [userAuthorId], references: [id])
 
+  categoriesId String
+  categories Categories @relation(fields: [categoriesId], references: [id])
+
+  @@map("Podcasts")
+
+}
+
+model Categories {
+  id String @id @default(uuid())
+  name String
+  podcasts Podcasts[]
+
+  @@map("Categories")
 }

@@ -3,5 +3,6 @@ export type UserDto = {
   name: string;
   lastName: string;
   email: string;
+  image?: string;
   password: string;
 };
