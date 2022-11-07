@@ -17,15 +17,26 @@ export class PodcastService {
   async create(podcastDto: PodcastDto, userId: string) {
     try {
       const userExist = await this.findUser(userId);
+      const categorie = await this.prisma.categories.findFirst({
+        where: {
+          name: podcastDto.categoriesId,
+        },
+      });
 
       if (
         (userExist !== undefined && userExist) ||
         (userExist !== null && userExist)
       ) {
-        podcastDto.userAuthorId = userExist.id;
-        return await this.prisma.podcasts.create({ data: podcastDto });
+        if (categorie) {
+          podcastDto.userAuthorId = userExist.id;
+          podcastDto.categoriesId = categorie.id;
+
+          return await this.prisma.podcasts.create({ data: podcastDto });
+        } else {
+          return 'Esta categoria não existe';
+        }
       } else {
-        throw new Error('Fala ao enviar podcast');
+        return 'Falha ao enviar podcast';
       }
     } catch (error) {
       throw new Error(error.message);
@@ -46,7 +57,7 @@ export class PodcastService {
           },
         });
       } else {
-        throw new Error('Erro ao listar podcasts');
+        return 'Erro ao listar podcasts';
       }
     } catch (error) {
       throw new Error(error.message);

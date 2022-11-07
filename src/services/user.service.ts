@@ -15,7 +15,7 @@ export class UserService {
       });
 
       if (userExist) {
-        throw new Error('E-mail já existente');
+        return 'E-mail já existente';
       } else {
         const userCreated = await this.prisma.user.create({
           data: userDto,

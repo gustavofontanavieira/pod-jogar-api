@@ -5,6 +5,7 @@ export type PodcastDto = {
   name: string;
   description: string;
   image: string;
+  file: string;
   userAuthorId: string;
-  categoriesId: CategoriesEnum;
+  categoriesId: string;
 };

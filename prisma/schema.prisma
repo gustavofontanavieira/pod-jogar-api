@@ -15,6 +15,7 @@ model User {
   password String
   image String?
   podcasts Podcasts[]
+  favoritesPodcasts FavoritesPodcasts[]
 
   @@map("User")
 }
@@ -24,6 +25,8 @@ model Podcasts {
   name String
   description String
   image String
+  file String
+  favoritesPodcasts FavoritesPodcasts[]
 
   userAuthorId String
   userAuthor User @relation(fields: [userAuthorId], references: [id])
@@ -41,4 +44,14 @@ model Categories {
   podcasts Podcasts[]
 
   @@map("Categories")
+}
+
+model FavoritesPodcasts {
+  id String @id @default(uuid())
+  
+  userId String
+  userFavorites User @relation(fields: [userId], references: [id])
+
+  podcastsId String
+  podcastsFavorites Podcasts @relation(fields: [podcastsId], references: [id])
 }
