@@ -99,4 +99,41 @@ export class UserService {
       return error.message;
     }
   }
+
+  async favoritePodcast(userId: string, podcastId: string) {
+    try {
+      await this.prisma.favoritesPodcasts.create({
+        data: {
+          podcastsId: podcastId,
+          userId: userId,
+        },
+      });
+
+      return 'Favoritado';
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async disfavorPodcast(id: string, userId: string) {
+    try {
+      const userExist = this.prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (userExist) {
+        await this.prisma.favoritesPodcasts.delete({
+          where: {
+            id: id,
+          },
+        });
+        return 'Removido dos favoritos';
+      }
+      return 'Erro eo remover dos favoritos';
+    } catch (error) {
+      return error.message;
+    }
+  }
 }

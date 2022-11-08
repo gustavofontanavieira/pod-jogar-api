@@ -44,4 +44,20 @@ export class UserController {
   async login(@Body() data: LoginDto) {
     return await this.userService.login(data);
   }
+
+  @Post('favorite/:userId/:podcastId')
+  async favorite(
+    @Param('userId') userId: string,
+    @Param('podcastId') podcastId: string,
+  ) {
+    return await this.userService.favoritePodcast(userId, podcastId);
+  }
+
+  @Delete('disfavor/:userId/:favoriteId')
+  async disfavor(
+    @Param('userId') userId: string,
+    @Param('favoriteId') favoriteId: string,
+  ) {
+    return await this.userService.disfavorPodcast(favoriteId, userId);
+  }
 }
