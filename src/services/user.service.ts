@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
+import { LoginDto } from 'src/dto/login.dto';
 import { UserDto } from '../dto/user.dto';
 
 @Injectable()
@@ -72,6 +73,28 @@ export class UserService {
         },
       });
       return 'Usuário deletado com sucesso';
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async login(loginDto: LoginDto) {
+    try {
+      const emailFinded = await this.prisma.user.findFirst({
+        where: {
+          email: loginDto.email,
+        },
+      });
+
+      if (emailFinded) {
+        if (emailFinded.password === loginDto.password) {
+          return true;
+        } else {
+          return 'Senha errada';
+        }
+      } else {
+        return 'E-mail não encontrado';
+      }
     } catch (error) {
       return error.message;
     }

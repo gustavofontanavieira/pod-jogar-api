@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dto/user.dto';
+import { LoginDto } from 'src/dto/login.dto';
 
 @Controller('user')
 export class UserController {
@@ -37,5 +38,10 @@ export class UserController {
   @Delete('deleteUserById/:id')
   async deleteUserById(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
+  }
+
+  @Post('login')
+  async login(@Body() data: LoginDto) {
+    return await this.userService.login(data);
   }
 }
