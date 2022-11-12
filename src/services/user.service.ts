@@ -28,13 +28,13 @@ export class UserService {
     }
   }
 
-  async update(userDto: UserDto, userId: string) {
+  async update(imageDto: string | null, userId: string) {
     try {
       const editedUser = await this.prisma.user.update({
-        data: userDto,
         where: {
           id: userId,
         },
+        data: imageDto,
       });
       return editedUser;
     } catch (error) {
@@ -88,12 +88,12 @@ export class UserService {
 
       if (emailFinded) {
         if (emailFinded.password === loginDto.password) {
-          return true;
+          return emailFinded.id;
         } else {
-          return 'Senha errada';
+          return false;
         }
       } else {
-        return 'E-mail não encontrado';
+        return false;
       }
     } catch (error) {
       return error.message;
