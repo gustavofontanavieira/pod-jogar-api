@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { PodcastDto } from '../dto/podcast.dto';
+import { CategoriesService } from './categories.service';
 
 @Injectable()
 export class PodcastService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private categorieService: CategoriesService,
+  ) {}
 
   async findUser(id: string) {
     return await this.prisma.user.findUnique({
@@ -17,11 +21,9 @@ export class PodcastService {
   async create(podcastDto: PodcastDto, userId: string) {
     try {
       const userExist = await this.findUser(userId);
-      const categorie = await this.prisma.categories.findFirst({
-        where: {
-          name: podcastDto.categoriesId,
-        },
-      });
+      const categorie = await this.categorieService.findCategorie(
+        podcastDto.categoriesId,
+      );
 
       if (
         (userExist !== undefined && userExist) ||
@@ -125,6 +127,29 @@ export class PodcastService {
       }
     } catch (error) {
       throw new Error(error.message);
+    }
+  }
+
+  async getByCategorie(categorie: string, id: string) {
+    try {
+      const categorieId = await this.prisma.categories.findFirst({
+        where: {
+          name: categorie,
+        },
+      });
+
+      console.log(categorieId.id);
+
+      return await this.prisma.podcasts.findMany({
+        where: {
+          categoriesId: categorieId.id,
+          NOT: {
+            userAuthorId: id,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
     }
   }
 }

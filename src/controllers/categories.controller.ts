@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CategoriesService } from 'src/services/categories.service';
 
 @Controller('categories')

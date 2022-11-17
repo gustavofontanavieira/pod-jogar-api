@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import main from 'prisma/seed';
 import { AppModule } from './app.module';
 import { PrismaClient } from '@prisma/client';
-import { arrayBuffer } from 'stream/consumers';
 const prisma = new PrismaClient();
 
 async function bootstrap() {

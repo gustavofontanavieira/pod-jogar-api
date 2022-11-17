@@ -40,7 +40,7 @@ model Podcasts {
 
 model Categories {
   id String @id @default(uuid())
-  name String
+  name String? @unique
   podcasts Podcasts[]
 
   @@map("Categories")
