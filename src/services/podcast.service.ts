@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { PodcastDto } from '../dto/podcast.dto';
 import { CategoriesService } from './categories.service';
@@ -138,8 +138,6 @@ export class PodcastService {
         },
       });
 
-      console.log(categorieId.id);
-
       return await this.prisma.podcasts.findMany({
         where: {
           categoriesId: categorieId.id,
@@ -148,6 +146,27 @@ export class PodcastService {
           },
         },
       });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async getById(id: string) {
+    try {
+      const finded = await this.prisma.podcasts.findUnique({
+        where: {
+          id: id,
+        },
+        select: {
+          name: true,
+          id: true,
+          image: true,
+          file: true,
+          description: true,
+        },
+      });
+
+      return finded;
     } catch (error) {
       console.log(error.message);
     }

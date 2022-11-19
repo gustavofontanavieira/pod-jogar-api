@@ -84,4 +84,9 @@ export class PodcastController {
   ) {
     return await this.podcastService.getByCategorie(categorie, id);
   }
+
+  @Get('getPodcastByid/:id')
+  async getById(@Param('id') id: string) {
+    return await this.podcastService.getById(id);
+  }
 }

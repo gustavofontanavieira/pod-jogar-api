@@ -60,4 +60,9 @@ export class UserController {
   ) {
     return await this.userService.disfavorPodcast(favoriteId, userId);
   }
+
+  @Get('getFavoritePodcasts/:userId')
+  async getFavorotes(@Param('userId') userId: string) {
+    return await this.userService.getAllFavorite(userId);
+  }
 }

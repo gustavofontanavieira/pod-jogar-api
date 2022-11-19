@@ -136,4 +136,16 @@ export class UserService {
       return error.message;
     }
   }
+
+  async getAllFavorite(userId: string) {
+    try {
+      return await this.prisma.favoritesPodcasts.findMany({
+        where: {
+          userId: userId,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
